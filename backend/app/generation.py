@@ -26,7 +26,7 @@ much higher free-tier daily quota and to drop a deprecated SDK dependency
 """
 import json
 import re
-from typing import List
+from typing import List, Optional
 
 from groq import Groq, RateLimitError
 
@@ -131,6 +131,28 @@ def _find_sources(test_name: str, sources_by_test: dict) -> list:
     return []
 
 
+def _find_scored_value(test_name: str, scored_by_test: dict) -> Optional[ScoredLabValue]:
+    """
+    Same fuzzy-match strategy as _find_sources() -- looks up the
+    deterministically-scored value (see severity.py) that a model-echoed
+    test name corresponds to. This is what status/severity/value/unit in
+    the final Finding actually come from; the model's own copy of these
+    fields in its JSON output is NEVER trusted for them, only used to
+    figure out which test it's talking about and to write the free-text
+    explanation. Silently trusting the model's echo defeats the entire
+    point of computing severity deterministically (see severity.py's
+    module docstring) -- if the model mis-copies a field, that error
+    would otherwise reach the patient-facing report unnoticed.
+    """
+    key = _normalize_test_name(test_name)
+    if key in scored_by_test:
+        return scored_by_test[key]
+    for stored_key, value in scored_by_test.items():
+        if stored_key in key or key in stored_key:
+            return value
+    return None
+
+
 def generate_report(scored_values: List[ScoredLabValue]) -> ReportResult:
     normal = [v for v in scored_values if v.severity == "normal"]
     unknown = [v for v in scored_values if v.severity == "unknown"]
@@ -153,7 +175,9 @@ def generate_report(scored_values: List[ScoredLabValue]) -> ReportResult:
     # Retrieve grounding context per abnormal finding.
     context_blocks = []
     sources_by_test = {}
+    scored_by_test = {}
     for v in abnormal:
+        scored_by_test[_normalize_test_name(v.test)] = v
         chunks = retrieve_for_test(v.test)
         # Drop chunks that aren't actually relevant (see
         # RETRIEVAL_SCORE_THRESHOLD's comment in config.py) -- prevents
@@ -210,13 +234,18 @@ def generate_report(scored_values: List[ScoredLabValue]) -> ReportResult:
     findings = []
     for f in parsed.get("findings", []):
         test_name = f.get("test", "")
+        scored = _find_scored_value(test_name, scored_by_test)
+        if scored is None:
+            # Model referenced a test we never sent it -- skip rather
+            # than fabricate a finding with no deterministic backing.
+            continue
         findings.append(
             Finding(
-                test=test_name,
-                value=str(f.get("value", "")),
-                unit=f.get("unit", ""),
-                status=f.get("status", ""),
-                severity=f.get("severity", ""),
+                test=scored.test,
+                value=str(scored.value),
+                unit=scored.unit,
+                status=scored.status,
+                severity=scored.severity,
                 plain_meaning=f.get("plain_meaning", ""),
                 next_step=f.get("next_step", ""),
                 sources=_find_sources(test_name, sources_by_test),
