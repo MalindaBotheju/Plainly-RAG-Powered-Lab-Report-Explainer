@@ -1,0 +1,11 @@
+TEST: LDL Cholesterol ("Bad" Cholesterol)
+
+What it measures: The amount of low-density lipoprotein cholesterol in your blood, a type of fat that can build up inside artery walls.
+
+Why it's tested: Higher LDL is linked to a greater long-term risk of heart attack and stroke, so it's used to gauge cardiovascular risk.
+
+What a high result can mean: Elevated LDL means more of this fat is available to build up as plaque in blood vessels over time. It usually doesn't cause any symptoms by itself -- it's a risk factor found through blood tests, not something you'd feel. Risk depends on the whole picture: how high the number is, other lab values, blood pressure, smoking status, family history, and age.
+
+What a low result can mean: Low LDL is generally not a concern and is often the goal of treatment.
+
+Typical next steps if abnormal: Lifestyle changes (diet, exercise), and for higher levels or added risk factors, a doctor may discuss cholesterol-lowering medication such as a statin. Whether treatment is needed depends on the full clinical picture, not this one number alone.

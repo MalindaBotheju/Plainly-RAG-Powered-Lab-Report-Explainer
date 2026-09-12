@@ -1,0 +1,7 @@
+backend/venv/
+backend/.env
+backend/audit_log.csv
+**/__pycache__/
+*.pyc
+.DS_Store
+node_modules/

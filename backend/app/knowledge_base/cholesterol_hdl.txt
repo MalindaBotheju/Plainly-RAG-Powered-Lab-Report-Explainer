@@ -1,0 +1,11 @@
+TEST: HDL Cholesterol ("Good" Cholesterol)
+
+What it measures: The amount of high-density lipoprotein cholesterol, which helps carry excess cholesterol away from artery walls back to the liver.
+
+Why it's tested: Higher HDL is generally associated with lower cardiovascular risk, so unlike LDL, higher is usually better here.
+
+What a low result can mean: Low HDL is associated with higher cardiovascular risk over time. It's often influenced by lack of physical activity, smoking, and some genetic factors.
+
+What a high result can mean: A high HDL is not typically a concern and is usually considered protective.
+
+Typical next steps if abnormal (low): Increasing physical activity and stopping smoking are the most well-supported ways to raise HDL. This is usually looked at together with LDL and triglycerides, not on its own.

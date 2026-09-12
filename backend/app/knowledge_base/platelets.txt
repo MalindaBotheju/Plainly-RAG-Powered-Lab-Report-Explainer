@@ -1,0 +1,11 @@
+TEST: Platelets
+
+What it measures: The blood cell fragments responsible for clotting and stopping bleeding.
+
+Why it's tested: Checks whether you have enough clotting capability, and can flag some bone marrow or immune conditions.
+
+What a low result can mean: Low platelets (thrombocytopenia) can increase bruising or bleeding risk. Causes range from viral infections and certain medications to autoimmune conditions or bone marrow issues.
+
+What a high result can mean: High platelets can occur with inflammation, iron deficiency, or after surgery/infection, and less commonly from a bone marrow condition.
+
+Typical next steps if abnormal: Usually re-checked, alongside a review of recent illness or medications, before deciding if further workup is needed.

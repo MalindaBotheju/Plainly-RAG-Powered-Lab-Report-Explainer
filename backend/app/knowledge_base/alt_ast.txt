@@ -1,0 +1,11 @@
+TEST: ALT and AST (Liver Enzymes)
+
+What it measures: Enzymes released by liver cells; when the liver is irritated or damaged, these leak into the blood in higher amounts.
+
+Why it's tested: Used to screen for liver inflammation or damage.
+
+What a high result can mean: Elevated ALT/AST can be caused by many things -- fatty liver, alcohol use, certain medications or supplements, viral hepatitis, or recent intense exercise. A single mildly elevated result is common and not automatically alarming, but it usually calls for a repeat test or follow-up to find the cause.
+
+What a low result can mean: Low levels are not typically a concern.
+
+Typical next steps if abnormal: Repeat testing, a review of medications/alcohol use/supplements, and sometimes additional liver-related blood tests or imaging.

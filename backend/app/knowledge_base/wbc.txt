@@ -1,0 +1,11 @@
+TEST: White Blood Cell Count (WBC)
+
+What it measures: The number of white blood cells, which are part of the immune system, in your blood.
+
+Why it's tested: Helps detect infection, inflammation, or in some cases, blood or immune system disorders.
+
+What a high result can mean: An elevated WBC count often reflects the body responding to an infection, inflammation, stress, or sometimes certain medications (like steroids). On its own, a mildly high WBC count is common and often not serious -- it's frequently checked again after treating any known cause.
+
+What a low result can mean: A low WBC count can reduce the body's ability to fight infection and can result from viral infections, certain medications, or bone marrow conditions.
+
+Typical next steps if abnormal: Often re-checked after any obvious cause (like a cold or infection) has resolved. Persistently abnormal results usually prompt further blood tests to look for a specific cause.

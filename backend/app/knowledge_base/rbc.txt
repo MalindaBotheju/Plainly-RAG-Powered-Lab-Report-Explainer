@@ -1,0 +1,11 @@
+TEST: RBC (Red Blood Cell Count)
+
+What it measures: The number of red blood cells in a given volume of blood. Red blood cells carry oxygen from the lungs to the rest of the body.
+
+Why it's tested: Part of a routine complete blood count (CBC). Used alongside hemoglobin and hematocrit to check for anemia (too few red blood cells) or polycythemia (too many).
+
+What a low result can mean: A low RBC count can cause tiredness, weakness, shortness of breath, or pale skin -- similar to low hemoglobin, since the two usually move together. Common causes include iron or vitamin deficiency, chronic blood loss, kidney disease, or bone marrow problems.
+
+What a high result can mean: A high RBC count can happen with dehydration, smoking, living at high altitude, or less commonly, a bone marrow condition that overproduces red blood cells.
+
+Typical next steps if abnormal: Usually interpreted together with hemoglobin and hematocrit rather than alone. Additional tests (iron studies, vitamin B12/folate, reticulocyte count) and a discussion with a doctor are typical next steps, especially if there are symptoms like fatigue or dizziness.

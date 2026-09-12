@@ -1,0 +1,46 @@
+[
+  {
+    "name": "high_glucose_and_ldl",
+    "values": [
+      {"test": "Glucose", "value": "126", "unit": "mg/dL", "reference_range": "70-99", "reported_flag": "H"},
+      {"test": "LDL Cholesterol", "value": "165", "unit": "mg/dL", "reference_range": "<100", "reported_flag": "H"},
+      {"test": "TSH", "value": "2.1", "unit": "mIU/L", "reference_range": "0.4-4.0", "reported_flag": ""}
+    ],
+    "expected_status": {"Glucose": "high", "LDL Cholesterol": "high", "TSH": "normal"},
+    "expected_severity": {"Glucose": "concerning", "LDL Cholesterol": "concerning", "TSH": "normal"}
+  },
+  {
+    "name": "low_hemoglobin_high_wbc",
+    "values": [
+      {"test": "Hemoglobin", "value": "10.2", "unit": "g/dL", "reference_range": "13.5-17.5", "reported_flag": "L"},
+      {"test": "WBC", "value": "11.8", "unit": "x10^9/L", "reference_range": "4.0-11.0", "reported_flag": "H"}
+    ],
+    "expected_status": {"Hemoglobin": "low", "WBC": "high"},
+    "expected_severity": {"Hemoglobin": "concerning", "WBC": "mild"}
+  },
+  {
+    "name": "all_normal",
+    "values": [
+      {"test": "Glucose", "value": "88", "unit": "mg/dL", "reference_range": "70-99", "reported_flag": ""},
+      {"test": "TSH", "value": "1.8", "unit": "mIU/L", "reference_range": "0.4-4.0", "reported_flag": ""}
+    ],
+    "expected_status": {"Glucose": "normal", "TSH": "normal"},
+    "expected_severity": {"Glucose": "normal", "TSH": "normal"}
+  },
+  {
+    "name": "severely_high_potassium",
+    "values": [
+      {"test": "Potassium", "value": "6.8", "unit": "mmol/L", "reference_range": "3.5-5.0", "reported_flag": "H"}
+    ],
+    "expected_status": {"Potassium": "high"},
+    "expected_severity": {"Potassium": "concerning"}
+  },
+  {
+    "name": "trap_missing_range",
+    "values": [
+      {"test": "Some Obscure Marker", "value": "42", "unit": "", "reference_range": "", "reported_flag": ""}
+    ],
+    "expected_status": {"Some Obscure Marker": "unknown"},
+    "expected_severity": {"Some Obscure Marker": "unknown"}
+  }
+]

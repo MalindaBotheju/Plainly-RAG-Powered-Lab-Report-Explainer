@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: lab-report-agent-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_VISION_MODEL
+        value: qwen/qwen3.8-27b
+      - key: GROQ_TEXT_MODEL
+        value: openai/gpt-oss-20b
+      - key: JINA_API_KEY
+        sync: false
+      - key: JINA_EMBEDDING_MODEL
+        value: jina-embeddings-v3
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: MAX_UPLOAD_MB
+        value: "10"
+      - key: TOP_K_CHUNKS
+        value: "3"

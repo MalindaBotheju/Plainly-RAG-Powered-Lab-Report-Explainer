@@ -1,0 +1,11 @@
+TEST: HCT (Hematocrit)
+
+What it measures: The percentage of your blood's volume that is made up of red blood cells.
+
+Why it's tested: Part of a routine complete blood count (CBC). Used alongside hemoglobin and RBC count to check for anemia (too few red blood cells) or polycythemia (too many), and to help assess hydration status.
+
+What a low result can mean: A low hematocrit usually points to the same causes as low hemoglobin or low RBC count -- anemia from iron or vitamin deficiency, chronic blood loss, kidney disease, or bone marrow problems. It can also happen with overhydration (fluid diluting the blood).
+
+What a high result can mean: A high hematocrit can happen with dehydration (blood is more concentrated), smoking, living at high altitude, or less commonly, a bone marrow condition that overproduces red blood cells.
+
+Typical next steps if abnormal: Usually interpreted together with hemoglobin and RBC count rather than alone. Additional tests (iron studies, vitamin B12/folate, reticulocyte count) and a discussion with a doctor are typical next steps, especially if there are symptoms like fatigue or dizziness.

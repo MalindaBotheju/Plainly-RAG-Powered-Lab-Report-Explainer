@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Plainly — Understand your lab results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F7F5;
+    --surface: #FFFFFF;
+    --ink: #16241F;
+    --ink-soft: #4A5A54;
+    --line: #DDE5E1;
+    --accent: #0B6E63;
+    --accent-soft: #E3F0EE;
+    --concerning: #B8443C;
+    --concerning-bg: #FBEBE9;
+    --mild: #B3791E;
+    --mild-bg: #FBF1E1;
+    --normal: #2E7D4F;
+    --normal-bg: #E9F5EE;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+  }
+
+  header {
+    padding: 48px 0 28px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .logo .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(28px, 4vw, 38px);
+    line-height: 1.15;
+    margin: 22px 0 10px;
+    letter-spacing: -0.01em;
+  }
+
+  header p {
+    color: var(--ink-soft);
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  main {
+    flex: 1;
+    padding: 40px 0 80px;
+  }
+
+  /* ---- Upload card ---- */
+  .upload-card {
+    background: var(--surface);
+    border: 1.5px dashed var(--line);
+    border-radius: var(--radius);
+    padding: 40px 28px;
+    text-align: center;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    cursor: pointer;
+  }
+
+  .upload-card.dragover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .upload-card svg { color: var(--accent); }
+
+  .upload-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 16px 0 6px;
+  }
+
+  .upload-card p {
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .upload-card .filetypes {
+    margin-top: 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  #file-input { display: none; }
+
+  .file-chip {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-top: 16px;
+    font-size: 14px;
+  }
+
+  .file-chip.visible { display: flex; }
+
+  .file-chip .name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .file-chip button {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: underline;
+    padding: 0;
+  }
+
+  .analyze-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--accent);
+    color: white;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+    display: none;
+  }
+
+  .analyze-btn.visible { display: block; }
+  .analyze-btn:hover { background: #095a51; }
+  .analyze-btn:active { transform: scale(0.99); }
+  .analyze-btn:disabled { background: #9DBDB8; cursor: not-allowed; }
+
+  .privacy-note {
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  /* ---- Status / loading ---- */
+  .status-block {
+    display: none;
+    margin-top: 28px;
+    padding: 18px 20px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .status-block.visible { display: block; }
+  .status-block.error { color: var(--concerning); border-color: var(--concerning-bg); background: var(--concerning-bg); }
+
+  /* ---- Results ---- */
+  #results { display: none; margin-top: 40px; }
+  #results.visible { display: block; }
+
+  .summary-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    padding: 26px 26px 22px;
+    margin-bottom: 26px;
+  }
+
+  .summary-card .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 8px;
+  }
+
+  .summary-card p {
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .rail {
+    position: relative;
+    padding-left: 26px;
+  }
+
+  .rail::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--line);
+  }
+
+  .finding {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+
+  .finding::before {
+    content: "";
+    position: absolute;
+    left: -22px;
+    top: 24px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 3px solid var(--bg);
+  }
+
+  .finding.concerning::before { background: var(--concerning); }
+  .finding.mild::before { background: var(--mild); }
+
+  .finding-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .finding-head .test-name {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .finding-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .finding.concerning .finding-value { background: var(--concerning-bg); color: var(--concerning); }
+  .finding.mild .finding-value { background: var(--mild-bg); color: var(--mild); }
+
+  .finding-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-left: 8px;
+  }
+  .finding.concerning .finding-tag { color: var(--concerning); }
+  .finding.mild .finding-tag { color: var(--mild); }
+
+  .finding-body {
+    margin-top: 10px;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+
+  .finding-body .row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .finding-body .row .label {
+    flex-shrink: 0;
+    font-weight: 600;
+    color: var(--ink-soft);
+    width: 92px;
+  }
+
+  .finding-sources {
+    margin-top: 10px;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .normal-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 22px 0 28px;
+  }
+
+  .normal-chip {
+    background: var(--normal-bg);
+    color: var(--normal);
+    font-size: 12.5px;
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  .bottom-line {
+    background: var(--accent);
+    color: white;
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-top: 8px;
+  }
+
+  .bottom-line .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin: 0 0 8px;
+  }
+
+  .bottom-line p {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+
+  .disclaimer {
+    margin-top: 18px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    padding: 14px 16px;
+    border-left: 2px solid var(--line);
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 22px 0;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="logo"><span class="dot"></span>Plainly</div>
+    <h1>Understand your lab results, in plain English.</h1>
+    <p>Upload a lab report and get a short, jargon-free explanation of what's off, what it might mean, and what to ask your doctor next.</p>
+  </header>
+</div>
+
+<main>
+  <div class="wrap">
+
+    <div class="upload-card" id="upload-card">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M12 12v6"/><path d="m9.5 14.5 2.5-2.5 2.5 2.5"/></svg>
+      <h3>Drop your lab report here</h3>
+      <p>or click to choose a file</p>
+      <div class="filetypes">PNG · JPG — up to 10MB</div>
+      <input type="file" id="file-input" accept=".png,.jpg,.jpeg,image/png,image/jpeg" />
+    </div>
+
+    <div class="file-chip" id="file-chip">
+      <span class="name" id="file-name"></span>
+      <button id="file-remove" type="button">Remove</button>
+    </div>
+
+    <button class="analyze-btn" id="analyze-btn">Explain my results</button>
+
+    <div class="privacy-note">
+      <span>🔒</span>
+      <span>Your file is sent directly to the analysis API for this one request and is not stored. This tool does not replace medical advice.</span>
+    </div>
+
+    <div class="status-block" id="status-block"></div>
+
+    <div id="results"></div>
+
+  </div>
+</main>
+
+<div class="wrap">
+  <footer>Plainly is a portfolio project demonstrating retrieval-grounded (RAG) lab report interpretation. Not a medical device. Always consult a licensed doctor.</footer>
+</div>
+
+<script src="config.js"></script>
+<script>
+  // Point this at your deployed backend (Render) once live.
+  // For local dev, keep it as http://localhost:8000
+  const API_BASE_URL = window.PLAINLY_API_BASE_URL || "http://localhost:8000";
+
+  const uploadCard = document.getElementById('upload-card');
+  const fileInput = document.getElementById('file-input');
+  const fileChip = document.getElementById('file-chip');
+  const fileName = document.getElementById('file-name');
+  const fileRemove = document.getElementById('file-remove');
+  const analyzeBtn = document.getElementById('analyze-btn');
+  const statusBlock = document.getElementById('status-block');
+  const resultsEl = document.getElementById('results');
+
+  let selectedFile = null;
+
+  uploadCard.addEventListener('click', () => fileInput.click());
+
+  ['dragenter', 'dragover'].forEach(evt =>
+    uploadCard.addEventListener(evt, (e) => {
+      e.preventDefault();
+      uploadCard.classList.add('dragover');
+    })
+  );
+  ['dragleave', 'drop'].forEach(evt =>
+    uploadCard.addEventListener(evt, (e) => {
+      e.preventDefault();
+      uploadCard.classList.remove('dragover');
+    })
+  );
+  uploadCard.addEventListener('drop', (e) => {
+    const file = e.dataTransfer.files[0];
+    if (file) setFile(file);
+  });
+
+  fileInput.addEventListener('change', (e) => {
+    if (e.target.files[0]) setFile(e.target.files[0]);
+  });
+
+  fileRemove.addEventListener('click', (e) => {
+    e.stopPropagation();
+    selectedFile = null;
+    fileInput.value = "";
+    fileChip.classList.remove('visible');
+    analyzeBtn.classList.remove('visible');
+  });
+
+  function setFile(file) {
+    const allowed = ['application/pdf', 'image/png', 'image/jpeg'];
+    if (!allowed.includes(file.type)) {
+      showStatus("Please choose a PNG or JPG file.", true);
+      return;
+    }
+    selectedFile = file;
+    fileName.textContent = file.name;
+    fileChip.classList.add('visible');
+    analyzeBtn.classList.add('visible');
+    statusBlock.classList.remove('visible');
+    resultsEl.classList.remove('visible');
+  }
+
+  function showStatus(message, isError = false) {
+    statusBlock.textContent = message;
+    statusBlock.classList.add('visible');
+    statusBlock.classList.toggle('error', isError);
+  }
+
+  analyzeBtn.addEventListener('click', async () => {
+    if (!selectedFile) return;
+    analyzeBtn.disabled = true;
+    analyzeBtn.textContent = "Reading your results…";
+    resultsEl.classList.remove('visible');
+    showStatus("Uploading and analyzing — this can take up to 20 seconds.");
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/analyze`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.detail || `Request failed (${res.status})`);
+      }
+
+      const data = await res.json();
+      statusBlock.classList.remove('visible');
+      renderResults(data);
+    } catch (err) {
+      showStatus(`Something went wrong: ${err.message}`, true);
+    } finally {
+      analyzeBtn.disabled = false;
+      analyzeBtn.textContent = "Explain my results";
+    }
+  });
+
+  function renderResults(data) {
+    resultsEl.innerHTML = "";
+
+    if (data.insufficient_data) {
+      showStatus(data.message || "Could not find any test results in this file.", true);
+      return;
+    }
+
+    const summaryCard = document.createElement('div');
+    summaryCard.className = 'summary-card';
+    summaryCard.innerHTML = `<p class="eyebrow">Summary</p><p>${escapeHtml(data.overall_summary)}</p>`;
+    resultsEl.appendChild(summaryCard);
+
+    if (data.findings && data.findings.length) {
+      const rail = document.createElement('div');
+      rail.className = 'rail';
+
+      data.findings.forEach(f => {
+        const card = document.createElement('div');
+        card.className = `finding ${f.severity}`;
+        const arrow = f.status === 'high' ? '↑' : f.status === 'low' ? '↓' : '';
+        card.innerHTML = `
+          <div class="finding-head">
+            <span class="test-name">${escapeHtml(f.test)}</span>
+            <span class="finding-value">${escapeHtml(f.value)} ${escapeHtml(f.unit || '')} ${arrow}<span class="finding-tag">${escapeHtml(f.severity)}</span></span>
+          </div>
+          <div class="finding-body">
+            <div class="row"><span class="label">Means</span><span>${escapeHtml(f.plain_meaning)}</span></div>
+            <div class="row"><span class="label">Next step</span><span>${escapeHtml(f.next_step)}</span></div>
+          </div>
+          ${f.sources && f.sources.length ? `<div class="finding-sources">Source: ${f.sources.map(escapeHtml).join(', ')}</div>` : ''}
+        `;
+        rail.appendChild(card);
+      });
+      resultsEl.appendChild(rail);
+    }
+
+    if (data.normal_findings && data.normal_findings.length) {
+      const strip = document.createElement('div');
+      strip.className = 'normal-strip';
+      strip.innerHTML = `<span style="width:100%;font-size:12.5px;color:var(--ink-soft);margin-bottom:2px;">Within normal range</span>` +
+        data.normal_findings.map(n => `<span class="normal-chip">✓ ${escapeHtml(n)}</span>`).join('');
+      resultsEl.appendChild(strip);
+    }
+
+    const bottomLine = document.createElement('div');
+    bottomLine.className = 'bottom-line';
+    bottomLine.innerHTML = `<p class="eyebrow">Bottom line</p><p>${escapeHtml(data.bottom_line)}</p>`;
+    resultsEl.appendChild(bottomLine);
+
+    const disclaimer = document.createElement('div');
+    disclaimer.className = 'disclaimer';
+    disclaimer.textContent = data.disclaimer;
+    resultsEl.appendChild(disclaimer);
+
+    resultsEl.classList.add('visible');
+  }
+
+  function escapeHtml(str) {
+    if (typeof str !== 'string') return str;
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+</script>
+
+</body>
+</html>

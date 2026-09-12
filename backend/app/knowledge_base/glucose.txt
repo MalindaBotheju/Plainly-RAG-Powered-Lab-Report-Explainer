@@ -1,0 +1,11 @@
+TEST: Glucose (Fasting Blood Sugar)
+
+What it measures: The amount of sugar circulating in your blood after not eating for several hours.
+
+Why it's tested: Screens for diabetes and prediabetes, and helps monitor blood sugar control in people already diagnosed.
+
+What a high result can mean: A fasting glucose above the normal range can be an early sign of prediabetes or diabetes, meaning the body is having trouble moving sugar out of the blood and into cells. A single high reading is not enough to diagnose diabetes on its own -- a repeat test or an additional test called HbA1c (which reflects average blood sugar over about three months) is typically used to confirm it.
+
+What a low result can mean: Low blood sugar can happen from fasting too long, some medications (especially diabetes medications), skipping meals, or occasionally other medical conditions. Very low readings can cause shakiness, sweating, confusion, and need prompt attention.
+
+Typical next steps if abnormal: A repeat fasting test, an HbA1c test, and a conversation with a doctor about diet, activity, and family history are the usual next steps. This is not something to self-diagnose or self-treat.

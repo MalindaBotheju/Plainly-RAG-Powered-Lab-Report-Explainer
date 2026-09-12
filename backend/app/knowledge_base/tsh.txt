@@ -1,0 +1,11 @@
+TEST: TSH (Thyroid Stimulating Hormone)
+
+What it measures: A hormone from the pituitary gland that tells the thyroid gland how much thyroid hormone to make. It's the most common first test for thyroid function.
+
+Why it's tested: Screens for an underactive or overactive thyroid, which affects metabolism, energy, weight, and mood.
+
+What a high result can mean: A high TSH usually means the thyroid is underactive (hypothyroidism) -- the pituitary is "shouting louder" because the thyroid isn't responding enough. Symptoms can include fatigue, weight gain, feeling cold, and dry skin.
+
+What a low result can mean: A low TSH usually means the thyroid is overactive (hyperthyroidism). Symptoms can include weight loss, rapid heartbeat, anxiety, and feeling hot.
+
+Typical next steps if abnormal: Follow-up thyroid hormone tests (like free T4) are usually done to confirm and characterize the problem before any treatment decision.
